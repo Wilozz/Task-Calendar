@@ -1,10 +1,3 @@
-//
-//  Task_CalendarApp.swift
-//  Task Calendar
-//
-//  Created by Wilson Zhang on 24/5/2025.
-//
-
 import SwiftUI
 
 @main
