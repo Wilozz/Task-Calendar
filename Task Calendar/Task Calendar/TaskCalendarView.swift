@@ -31,10 +31,12 @@ struct TaskCalendarView: View {
                 
 
             }
+            .padding(.bottom, 10)
+            
             RoundedRectangle(cornerRadius: 8)
                 .fill(Color.blue.opacity(0.1))
                 .frame(height: 150)
-                .overlay(Text("Calendar goes here"))
+                .overlay(FullCalendarView())
         }
         .padding(.horizontal)
     }
