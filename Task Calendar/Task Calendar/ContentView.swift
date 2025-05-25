@@ -5,16 +5,23 @@ struct ContentView: View {
     @State private var showAddTask: Bool = false
     @State private var newTaskName = ""
     
+    func deleteTask(_ task: Task) {
+        tasks.removeAll { $0.id == task.id }
+    }
+    
     var body: some View {
         VStack(spacing: 0) {
             TaskBarView(showAddTask: $showAddTask)
             
             ScrollView {
                 VStack(spacing: 20) {
-                    ForEach(tasks) {
-                        task in TaskCalendarView(task: task)
+                    ForEach(tasks) { task in
+                        TaskCalendarView(task: task, onDelete: {
+                            deleteTask(task)
+                        })
                     }
                 }
+                .padding(.top)
             }
         }
         .frame(minWidth: 320, minHeight: 500)
