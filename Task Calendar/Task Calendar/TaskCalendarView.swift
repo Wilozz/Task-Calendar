@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct TaskCalendarView: View {
+    @State private var showConfirmation = false
     var task: Task
     var onDelete: () -> Void
     
@@ -13,12 +14,21 @@ struct TaskCalendarView: View {
                 Spacer()
                 
                 Button(action: {
-                    onDelete()
+                    showConfirmation = true
                 }) {
-                    Image(systemName: "minus.circle.fill")
-                        .foregroundColor(.red)
+                    Image(systemName: "minus")
+                        .padding(6)
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(.bordered)
+                .alert("Delete Task?", isPresented: $showConfirmation) {
+                    Button("Delete", role: .destructive) {
+                        onDelete()
+                    }
+                    Button("Cancel", role: .cancel) { }
+                } message: {
+                    Text("Are you sure you want to delete this task?")
+                }
+                
 
             }
             RoundedRectangle(cornerRadius: 8)
