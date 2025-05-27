@@ -9,6 +9,14 @@ struct ContentView: View {
         tasks.removeAll { $0.id == task.id }
     }
     
+    func addTask() {
+        if !newTaskName.trimmingCharacters(in: .whitespaces).isEmpty {
+            tasks.append(Task(name: newTaskName))
+            newTaskName = ""
+            showAddTask = false
+        }
+    }
+    
     var body: some View {
         VStack(spacing: 0) {
             TaskBarView(showAddTask: $showAddTask)
@@ -34,13 +42,12 @@ struct ContentView: View {
                 TextField("Enter Task Name", text: $newTaskName)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
+                    .onSubmit {
+                        addTask()
+                    }
 
                 Button("Add") {
-                    if !newTaskName.trimmingCharacters(in: .whitespaces).isEmpty {
-                        tasks.append(Task(name: newTaskName))
-                        newTaskName = ""
-                        showAddTask = false
-                    }
+                    addTask()
                 }
                 .buttonStyle(.borderedProminent)
 
