@@ -8,10 +8,10 @@ struct FullCalendarView: View {
         ScrollView(.horizontal) {
             HStack(alignment: .top, spacing: 4) {
                 VStack(spacing: 4) {
-                    ForEach(weekdays, id: \.self) {day in
-                        Text(day)
+                    ForEach(weekdays.indices, id: \.self) { index in
+                        Text(weekdays[index])
                             .font(.caption)
-                            .frame(width: 20, height: 20)
+                            .frame(width: 11, height: 11)
                     }
                 }
                 
@@ -22,13 +22,13 @@ struct FullCalendarView: View {
                         ForEach(column, id: \.self) {date in
                             Rectangle()
                                 .fill(Color.gray)
-                                .frame(width: 20, height: 20)
+                                .frame(width: 11, height: 11)
+
                         }
                     }
                 }
             }
         }
-        .background(Color(NSColor.windowBackgroundColor))
     }
     
     func generateDayColumns(for year: Int) -> [[Date]] {
