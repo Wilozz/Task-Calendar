@@ -2,7 +2,10 @@ import SwiftUI
 
 struct TaskCalendarView: View {
     @State private var showConfirmation = false
-    var task: Task
+    @State private var editName = false
+    @State private var taskName = ""
+    @Binding var task: Task
+    
     var onDelete: () -> Void
 
     var body: some View {
@@ -12,10 +15,30 @@ struct TaskCalendarView: View {
 
             VStack(alignment: .leading) {
                 HStack {
-                    Text(task.name)
-                        .font(.headline)
-
+                    if editName {
+                        TextField("Task Name", text: $taskName, onCommit: {
+                            task.name = taskName
+                            editName = false
+                        })
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(maxWidth: 200)
+                        .onAppear {
+                            taskName = task.name
+                        }
+                    } else {
+                        Text(task.name)
+                            .font(.headline)
+                    }
+                        
                     Spacer()
+                    
+                    Button(action: {
+                        editName = true
+                    }) {
+                        Image(systemName: "gearshape")
+                            .buttonStyle(.bordered)
+                            .controlSize(.small)
+                    }
 
                     Button(action: {
                         showConfirmation = true

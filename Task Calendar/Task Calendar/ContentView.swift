@@ -23,10 +23,13 @@ struct ContentView: View {
 
             ScrollView {
                 VStack(spacing: 20) {
-                    ForEach(tasks) { task in
-                        TaskCalendarView(task: task, onDelete: {
-                            deleteTask(task)
-                        })
+                    ForEach(tasks.indices, id: \.self) { index in
+                        TaskCalendarView(
+                            task: $tasks[index],
+                            onDelete: {
+                                deleteTask(tasks[index])
+                            }
+                        )
                     }
                 }
                 .padding(.top)
