@@ -61,7 +61,17 @@ struct TaskCalendarView: View {
                 RoundedRectangle(cornerRadius: 8)
                     .fill(Color(.controlBackgroundColor))
                     .frame(height: 150)
-                    .overlay(FullCalendarView())
+                    .overlay(FullCalendarView(loggedDates: task.loggedDates))
+                
+                HStack {
+                    Spacer()
+                    Button("Log Today") {
+                        let today = Calendar.current.startOfDay(for: Date())
+                        task.loggedDates.insert(today)
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                }
             }
             .padding(12) 
         }

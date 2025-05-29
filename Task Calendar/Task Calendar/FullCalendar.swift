@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct FullCalendarView: View {
+    let loggedDates: Set<Date>
     @State private var hoveredDate: Date? = nil
     @State private var mousePosition: CGPoint = .zero
 
@@ -27,7 +28,7 @@ struct FullCalendarView: View {
                                 ForEach(column.indices, id: \.self) { index in
                                     let date = column[index]
                                     if let date = date {
-                                        HoverableRectangle(date: date) { hovering, globalFrame in
+                                        HoverableRectangle(date: date, loggedDates: loggedDates) { hovering, globalFrame in
                                             let localOrigin = CGPoint(
                                                 x: globalFrame.midX - rootGeo.frame(in: .global).origin.x,
                                                 y: globalFrame.midY - rootGeo.frame(in: .global).origin.y
@@ -103,12 +104,17 @@ struct FullCalendarView: View {
 
 struct HoverableRectangle: View {
     let date: Date
+    let loggedDates: Set<Date>
     let onHoverChanged: (Bool, CGRect) -> Void
 
     var body: some View {
+        let isLogged = loggedDates.contains(Calendar.current.startOfDay(for: date))
+        
         ZStack {
             Rectangle()
-                .fill(Color(white: 0.3))
+                .fill(isLogged
+                      ? Color(red: 14 / 255, green: 161 / 255, blue: 230 / 255)
+                      : Color(white: 0.3))
 
             GeometryReader { geo in
                 Color.clear
