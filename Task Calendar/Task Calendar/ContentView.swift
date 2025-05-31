@@ -1,33 +1,34 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var tasks: [Task] = []
+    @EnvironmentObject var taskStore: TaskStore
+
     @State private var showAddTask: Bool = false
     @State private var newTaskName = ""
-    
+
     func deleteTask(_ task: Task) {
-        tasks.removeAll { $0.id == task.id }
+        taskStore.tasks.removeAll { $0.id == task.id }
     }
-    
+
     func addTask() {
         if !newTaskName.trimmingCharacters(in: .whitespaces).isEmpty {
-            tasks.append(Task(name: newTaskName))
+            taskStore.tasks.append(Task(name: newTaskName))
             newTaskName = ""
             showAddTask = false
         }
     }
-    
+
     var body: some View {
         VStack(spacing: 0) {
             TaskBarView(showAddTask: $showAddTask)
 
             ScrollView {
                 VStack(spacing: 20) {
-                    ForEach(tasks.indices, id: \.self) { index in
+                    ForEach(taskStore.tasks.indices, id: \.self) { index in
                         TaskCalendarView(
-                            task: $tasks[index],
+                            task: $taskStore.tasks[index],
                             onDelete: {
-                                deleteTask(tasks[index])
+                                deleteTask(taskStore.tasks[index])
                             }
                         )
                     }
@@ -36,7 +37,7 @@ struct ContentView: View {
             }
         }
         .frame(minWidth: 320, minHeight: 500)
-        .background(Color(.controlBackgroundColor)) 
+        .background(Color(.controlBackgroundColor))
         .sheet(isPresented: $showAddTask) {
             VStack(spacing: 20) {
                 Text("Add a New Task")
